@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bidding Program</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+}
+
+input[type="text"], button {
+    margin: 5px;
+}
+
+#currentBids {
+    margin-top: 20px;
+}
+    </style>>
+</head>
+<body>
+    <h1>Bidding Program</h1>
+    <div id="currentBids"></div>
+    <input type="text" id="bidInput1" placeholder="Enter Bid for User 1">
+    <button onclick="placeBid(1)">Place Bid for User 1</button><br>
+    <input type="text" id="bidInput2" placeholder="Enter Bid for User 2">
+    <button onclick="placeBid(2)">Place Bid for User 2</button>
+
+    <script>
+function getBids() {
+    const bids = localStorage.getItem('bids');
+    return bids ? JSON.parse(bids) : [];
+}
+
+function saveBids(bids) {
+    localStorage.setItem('bids', JSON.stringify(bids));
+}
+
+function displayBids() {
+    const currentBidsElement = document.getElementById('currentBids');
+    const bids = getBids();
+    currentBidsElement.innerHTML = '<h2>Current Bids:</h2>';
+    if (bids.length === 0) {
+        currentBidsElement.innerHTML += '<p>No bids yet.</p>';
+    } else {
+        bids.forEach((bid, index) => {
+            currentBidsElement.innerHTML += `<p>Bid ${index + 1}: $${bid}</p>`;
+        });
+    }
+}
+
+function placeBid(userNumber) {
+    const bidInput = document.getElementById(`bidInput${userNumber}`);
+    const bidAmount = parseFloat(bidInput.value);
+    if (!isNaN(bidAmount)) {
+        const bids = getBids();
+        bids.push(bidAmount);
+        saveBids(bids);
+        displayBids();
+        bidInput.value = '';
+    } else {
+        alert('Please enter a valid bid amount.');
+    }
+}
+
+displayBids();
+    </script>
+</body>
+</html>
