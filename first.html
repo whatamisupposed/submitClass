@@ -3,22 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Factorial Calculation</title>
 </head>
 <body>
-    
-</body>
-<script>
-    function fact(n) {
-    if (n === 0 || n === 1) {
-        return 1;
-    } else {
-        return n * fact(n - 1);
-    }
-}
+    <p>The factorial of 7 is: <span id="factorialResult"></span></p>
 
-const n = 7;
-const factorial = fact(n);
-console.log("Factorial of", n, "is", factorial);
+    <script>
+        function fact(n) {
+            if (n === 0 || n === 1) {
+                return 1;
+            } else {
+                return n * fact(n - 1);
+            }
+        }
+
+        const n = 7;
+        const factorial = fact(n);
+        console.log("Factorial of", n, "is", factorial);
+
+        document.getElementById("factorialResult").innerText = factorial;
     </script>
+</body>
 </html>
