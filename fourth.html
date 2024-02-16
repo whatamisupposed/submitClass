@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reverse Polish Notation Calculator</title>
+</head>
+<body>
+    <h1>Reverse Polish Notation Calculator</h1>
+    <p>Enter a Reverse Polish Notation expression:</p>
+    <input type="text" id="expressionInput" placeholder="e.g., 4 5 *">
+    <button onclick="evaluateExpression()">Evaluate</button>
+    <p id="result"></p>
+
+    <script>
+        class Stack {
+            constructor() {
+                this.items = [];
+            }
+
+            push(element) {
+                this.items.push(element);
+            }
+
+            pop() {
+                if (this.isEmpty()) {
+                    return "Underflow";
+                }
+                return this.items.pop();
+            }
+
+            peek() {
+                return !this.isEmpty() ? this.items[this.items.length - 1] : null;
+            }
+
+            isEmpty() {
+                return this.items.length === 0;
+            }
+
+            clear() {
+                this.items = [];
+            }
+        }
+
+        function evaluateRPN(expression) {
+            const stack = new Stack();
+            const operators = ['+', '-', '*', '/'];
+
+            expression.split(' ').forEach(token => {
+                if (!isNaN(parseFloat(token))) {
+                    stack.push(parseFloat(token));
+                } else if (operators.includes(token)) {
+                    const operand2 = stack.pop();
+                    const operand1 = stack.pop();
+                    let result;
+
+                    switch (token) {
+                        case '+':
+                            result = operand1 + operand2;
+                            break;
+                        case '-':
+                            result = operand1 - operand2;
+                            break;
+                        case '*':
+                            result = operand1 * operand2;
+                            break;
+                        case '/':
+                            result = operand1 / operand2;
+                            break;
+                    }
+
+                    stack.push(result);
+                }
+            });
+
+            return stack.peek();
+        }
+
+        function evaluateExpression() {
+            const expressionInput = document.getElementById('expressionInput');
+            const resultElement = document.getElementById('result');
+            const expression = expressionInput.value.trim();
+            
+            if (expression) {
+                const result = evaluateRPN(expression);
+                resultElement.textContent = `Result: ${result}`;
+            } else {
+                resultElement.textContent = 'Please enter a valid expression.';
+            }
+        }
+    </script>
+</body>
+</html>
